@@ -1,184 +1,396 @@
 <!DOCTYPE html>
-<html>
-<head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="utf-8">
-  
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FHC-zero | FengHanC</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --accent2: #3fb950;
+      --accent3: #d2a8ff;
+      --tag-bg: #1f2937;
+    }
 
-  
-  <title>Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="https://FengHanC.github.io.git/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:locale" content="default">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <link rel="stylesheet" href="/css/style.css">
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(13,17,23,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 56px;
+    }
+    .nav-logo { font-weight: 700; color: var(--accent); font-size: 1.1rem; letter-spacing: .5px; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .9rem;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 80px 24px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(88,166,255,.08) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .avatar {
+      width: 110px; height: 110px;
+      border-radius: 50%;
+      border: 3px solid var(--border);
+      margin-bottom: 24px;
+      box-shadow: 0 0 0 6px rgba(88,166,255,.1);
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero .subtitle {
+      color: var(--muted);
+      font-size: 1.1rem;
+      margin-bottom: 32px;
+      max-width: 480px;
+    }
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 36px;
+    }
+    .badge {
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: .82rem;
+      color: var(--muted);
+    }
+    .btn-row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-size: .9rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: opacity .2s, transform .15s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn:hover { opacity: .85; transform: translateY(-1px); }
+    .btn-primary { background: var(--accent); color: #0d1117; }
+    .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
+
+    /* ── Sections ── */
+    section { padding: 80px 24px; max-width: 960px; margin: 0 auto; }
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-title span { color: var(--accent); }
+    .section-divider {
+      width: 40px; height: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+      margin-bottom: 40px;
+    }
+
+    /* ── Skills ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      transition: border-color .2s, transform .2s;
+    }
+    .skill-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .skill-icon { font-size: 2rem; margin-bottom: 10px; }
+    .skill-name { font-weight: 600; margin-bottom: 4px; }
+    .skill-desc { color: var(--muted); font-size: .83rem; }
+
+    /* ── Projects ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: border-color .2s, transform .2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .project-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .project-name {
+      font-weight: 600;
+      color: var(--accent);
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .project-desc { color: var(--muted); font-size: .86rem; flex: 1; }
+    .project-lang {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .8rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .lang-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .lang-vue { background: #41b883; }
+    .lang-js  { background: #f1e05a; }
+    .lang-php { background: #4f5d95; }
+    .lang-css { background: #563d7c; }
+    .lang-html{ background: #e34c26; }
+
+    /* ── Contact ── */
+    .contact-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 48px 32px;
+      text-align: center;
+    }
+    .contact-box p { color: var(--muted); margin: 12px 0 28px; font-size: .95rem; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 24px;
+      color: var(--muted);
+      font-size: .83rem;
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 16px; }
+      .nav-links { gap: 14px; }
+      section { padding: 60px 16px; }
+    }
+  </style>
 </head>
-</html>
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://FengHanC.github.io.git"></form>
-      </div>
-    </div>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-logo">FHC-zero</div>
+  <div class="nav-links">
+    <a href="#about">关于</a>
+    <a href="#skills">技能</a>
+    <a href="#projects">项目</a>
+    <a href="#contact">联系</a>
   </div>
-</header>
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/04/21/hello-world/" class="article-date">
-  <time datetime="2019-04-21T06:42:46.107Z" itemprop="datePublished">2019-04-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/21/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://FengHanC.github.io.git/2019/04/21/hello-world/" data-id="cjuqmabk40000xkzsmfbyh90g" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2019/04/21/hello-world/">Hello World</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2019 Feng blank<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
 </nav>
-    
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<!-- Hero -->
+<section class="hero" id="about">
+  <img
+    class="avatar"
+    src="https://avatars.githubusercontent.com/u/37320134?v=4"
+    alt="FengHanC avatar"
+  />
+  <h1>Hi, I'm <span>FHC-zero</span> 👋</h1>
+  <p class="subtitle">
+    前端开发者，热衷于构建简洁而有趣的 Web 体验。<br/>
+    🍏 I may be slow to respond.
+  </p>
+  <div class="badge-row">
+    <span class="badge">Vue.js</span>
+    <span class="badge">Three.js</span>
+    <span class="badge">PHP / Laravel</span>
+    <span class="badge">HTML &amp; CSS</span>
+    <span class="badge">Node.js</span>
+  </div>
+  <div class="btn-row">
+    <a class="btn btn-primary" href="https://github.com/FengHanC" target="_blank">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577v-2.165c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.929.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      GitHub
+    </a>
+    <a class="btn btn-ghost" href="#projects">查看项目</a>
+  </div>
+</section>
 
+<!-- Skills -->
+<section id="skills">
+  <div class="section-title">技能 <span>&amp;</span> 工具</div>
+  <div class="section-divider"></div>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-icon">🟩</div>
+      <div class="skill-name">Vue.js</div>
+      <div class="skill-desc">组件化开发，构建交互丰富的前端应用</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🌐</div>
+      <div class="skill-name">HTML &amp; CSS</div>
+      <div class="skill-desc">响应式布局、动效设计，像素级还原设计稿</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🟨</div>
+      <div class="skill-name">JavaScript</div>
+      <div class="skill-desc">ES6+，异步编程，DOM 操作与 API 集成</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🔷</div>
+      <div class="skill-name">Three.js</div>
+      <div class="skill-desc">WebGL 3D 场景渲染与交互效果</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🐘</div>
+      <div class="skill-name">PHP / Laravel</div>
+      <div class="skill-desc">后端接口开发，MVC 架构与框架实践</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🟩</div>
+      <div class="skill-name">Node.js</div>
+      <div class="skill-desc">服务端 JS，工具链与包管理</div>
+    </div>
+  </div>
+</section>
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+<!-- Projects -->
+<section id="projects">
+  <div class="section-title">精选 <span>项目</span></div>
+  <div class="section-divider"></div>
+  <div class="projects-grid">
 
+    <a class="project-card" href="https://github.com/FengHanC/AISerial" target="_blank">
+      <div class="project-name">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8Z"/></svg>
+        AISerial
+      </div>
+      <div class="project-desc">AI 驱动的系列应用，集成智能交互功能</div>
+      <div class="project-lang"><span class="lang-dot lang-vue"></span>Vue</div>
+    </a>
 
-<script src="/js/script.js"></script>
+    <a class="project-card" href="https://github.com/FengHanC/AI-ImageStream" target="_blank">
+      <div class="project-name">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8Z"/></svg>
+        AI-ImageStream
+      </div>
+      <div class="project-desc">AI 图像流处理应用，实时展示生成内容</div>
+      <div class="project-lang"><span class="lang-dot lang-vue"></span>Vue</div>
+    </a>
 
+    <a class="project-card" href="https://github.com/FengHanC/threeDemo" target="_blank">
+      <div class="project-name">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8Z"/></svg>
+        threeDemo
+      </div>
+      <div class="project-desc">Three.js 3D 场景学习与演示项目</div>
+      <div class="project-lang"><span class="lang-dot lang-js"></span>JavaScript</div>
+    </a>
 
+    <a class="project-card" href="https://github.com/FengHanC/3d-rotate" target="_blank">
+      <div class="project-name">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8Z"/></svg>
+        3d-rotate
+      </div>
+      <div class="project-desc">纯 CSS 实现的 3D 旋转动效展示</div>
+      <div class="project-lang"><span class="lang-dot lang-css"></span>CSS</div>
+    </a>
+
+    <a class="project-card" href="https://github.com/FengHanC/respBtsp" target="_blank">
+      <div class="project-name">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8Z"/></svg>
+        respBtsp
+      </div>
+      <div class="project-desc">响应式布局实践，适配多端设备</div>
+      <div class="project-lang"><span class="lang-dot lang-html"></span>HTML</div>
+    </a>
+
+    <a class="project-card" href="https://github.com/FengHanC/tp6" target="_blank">
+      <div class="project-name">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8Z"/></svg>
+        tp6
+      </div>
+      <div class="project-desc">ThinkPHP 6 模板项目，快速搭建后端服务</div>
+      <div class="project-lang"><span class="lang-dot lang-php"></span>PHP</div>
+    </a>
 
   </div>
+</section>
+
+<!-- Contact -->
+<section id="contact">
+  <div class="section-title">联系 <span>我</span></div>
+  <div class="section-divider"></div>
+  <div class="contact-box">
+    <div style="font-size:2.5rem;">🍏</div>
+    <p>我可能回应较慢，但一定会看到你的消息！<br/>欢迎通过 GitHub 找到我。</p>
+    <a class="btn btn-primary" href="https://github.com/FengHanC" target="_blank">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577v-2.165c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.929.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      访问我的 GitHub
+    </a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 FHC-zero · Built with ❤️ · <a href="https://github.com/FengHanC/FengHanC.github.io" style="color:var(--accent);text-decoration:none;">源码</a></p>
+</footer>
+
 </body>
 </html>
